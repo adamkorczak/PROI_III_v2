@@ -8,6 +8,54 @@
 
 #define PI 3.14
 
+void Character::setFromFile(std::string s)
+{
+	std::cout << s <<std::endl;
+	std::stringstream ss;
+	ss.str(s);
+	std::vector<int> data;
+
+	char cBuff;
+	int iBuff;
+
+	while( ss >> iBuff)
+	if(ss >> cBuff)
+	data.push_back(iBuff);
+	else
+	data.push_back(iBuff);
+	
+	alive = data.back();
+	data.pop_back();
+	y = data.back();
+	data.pop_back();
+	x = data.back();
+	data.pop_back();
+	quantity = data.back();
+	data.pop_back();
+	hp = data.back();
+	data.pop_back();
+	id = data.back();
+	data.pop_back();
+	
+	if(!alive)
+	tempTexture.setTexture(deadTexture);	
+
+}
+
+
+std::string Character::toSave()
+{
+	std::ostringstream ss;
+
+	ss << id << "," << hp << ","  << quantity<< "," << x<< ","   << y << "," << alive << std::endl;
+
+	std::string s;
+	s = ss.str();
+
+	return s;
+}
+
+
 Character* Character::getCharByID(int _id)
 {
 	if(_id == id)
@@ -117,6 +165,8 @@ Character::Character(int _id, int _hpUnit, int _quantity, int _x, int _y, std::s
 	sigh.setFont(font);
 	sigh.setCharacterSize(16);
 	sigh.setColor(sf::Color::Red);
+	if(id < 0)
+	tempTexture.setColor(sf::Color(255,150,150));
 }
 
 
@@ -211,7 +261,6 @@ int* Character::getFreeSpaceNearEnemy(Battlefield &BF)
 	int i = 0;
 	int j = 0;
 	checkNeighborhood(BF);
-	showMask();
 
 	if(id < 0)
 	{
@@ -224,14 +273,13 @@ int* Character::getFreeSpaceNearEnemy(Battlefield &BF)
 				{
 					s[0] = N*(i - 1)/10;
 					s[1] = N*(j - 1)/10;
-					std::cout << i <<"\t"<<j<<std::endl;
 					return s;
 				}
 			}	
 		}
 	}
 	else
-	{std::cout <<"Error4" <<std::endl;
+	{
 		for( i = 2; i >= 0; --i)
 		{
 			for( j = 0; j < 3; ++j)
@@ -285,12 +333,12 @@ void Warrior::attack(Character &C, int dx, int dy, sf::RenderWindow &D,Battlefie
 
 	if(((abs(squarConverterX(dx)) == 1) || abs((squarConverterY(dy)) == 1))&&(abs(squarConverterX(dx))+abs(squarConverterY(dy))) <= 2)
 	{
-		C.defend(6*dmg,D,BF);	
+		C.defend(quantity*dmg,D,BF);	
 	}
 	else
 	{
 		walking(D,dx+s[0],dy+s[1],BF);
-		C.defend(4*dmg*dist/8,D,BF);
+		C.defend(quantity*dmg*dist/20,D,BF);
 	}
 	delete s;
 
@@ -313,7 +361,7 @@ void Warrior::defend(int dmg,sf::RenderWindow &D,Battlefield &BF)
 void Paladin::attack(Character &C, int dx, int dy,sf::RenderWindow &D,Battlefield &BF)
 {		
 	
-		C.defend(15*dmg/(abs(squarConverterX(dx)) + abs(squarConverterY(dy))),D,BF);	
+		C.defend(quantity*3*dmg/(abs(squarConverterX(dx)) + abs(squarConverterY(dy))),D,BF);	
 }
 
 
@@ -351,9 +399,7 @@ void Wizard::animateAttack(int dx, int dy, sf::RenderWindow &D, Battlefield &)
 		xx = x + dx - interval;
 	}
 	D.display();
-
-	ss.str("");
-	
+	ss.str("");	
 }
 
 
@@ -376,7 +422,7 @@ void Wizard::attack(Character &C, int dx, int dy,sf::RenderWindow &D,Battlefield
 
 		for( std::vector<Character*>::iterator it = chars.begin(); it !=chars.end(); ++it)
 		if((*it)->isAlive())
-		(*it)->defend(10*dmg/(abs(squarConverterX(dx)) + abs(squarConverterY(dy))),D,BF);
+		(*it)->defend(3*quantity*dmg/(abs(squarConverterX(dx)) + abs(squarConverterY(dy))),D,BF);
 	}
 	else
 	{
@@ -420,12 +466,12 @@ void Knight::attack(Character &C, int dx, int dy,sf::RenderWindow &D,Battlefield
 
 	if(((abs(squarConverterX(dx)) == 1) || abs((squarConverterY(dy)) == 1))&&(abs(squarConverterX(dx))+abs(squarConverterY(dy))) <= 2)
 	{
-		C.defend(8*dmg,D,BF);	
+		C.defend(quantity*4*dmg,D,BF);	
 	}
 	else
 	{
 		walking(D,dx+s[0],dy+s[1],BF);
-		C.defend(2*dmg/dist,D,BF);
+		C.defend(quantity*dmg/(2*dist),D,BF);
 	}
 	delete s;
 

@@ -22,6 +22,7 @@ public:
 	Battlefield(){}
 	Battlefield(int size);
 	
+	void clearBTF();
 	void markDead(int,int);
 	void insertPtrPosToChar(Character *C);
 	void insertPtrNegToChar(Character *C);

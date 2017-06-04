@@ -7,12 +7,22 @@ class Character;
 
 
 Character *Battlefield::getCharByID(int id)
-{std::cout << id << std::endl;
+{
 	if( id > 0)
 	return charsPos.at(id-1);
 	else
 	return charsNeg.at(abs(id)-1);
 
+}
+
+
+void Battlefield::clearBTF()
+{
+	for(int i = 0; i < size; ++i)
+	for(int j = 0; j < size; ++j)
+	field[i][j] = 0;
+
+	return;
 }
 
 

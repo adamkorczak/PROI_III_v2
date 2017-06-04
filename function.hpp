@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <SFML/Graphics.hpp>
 
 #ifndef _function_HPP_INCLUDED__   
@@ -42,6 +43,33 @@ void winnerComm(std::string s, sf::RenderWindow &D)
 	ss.str("");
 	D.display();
 
+}
+
+int confLoader(std::fstream &f)
+{
+	std::string data;
+	int side;
+	getline( f, data );
+	std::stringstream ss;
+	ss << data[0];
+	ss >> side;
+	f.seekg( 0, std::ios_base::beg);
+	return side;
+}
+
+
+int menu()
+{
+	char s;
+	std::cout <<" Press button N if u wanna play New Game"<< std::endl;
+	std::cout <<" Press button L if u wanna load recent Game"<< std::endl;
+	while(s != 'n' && s != 'l')
+	std::cin >> s;
+	if(s == 'n')
+	return 0;
+	else if(s == 'l')
+	return 1;
+	
 }
 
 #endif

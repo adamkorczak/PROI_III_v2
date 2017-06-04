@@ -59,6 +59,8 @@ public:
 	void drawSelected(sf::RenderWindow &D);
 	void blooding(sf::RenderWindow &D);
 	bool checkIfOtherCharIsNext(Battlefield &BF);
+	std::string toSave();
+	void setFromFile(std::string s);
 
 	Character* getCharByID(int _id);
 	void drawOjb(sf::RenderWindow &D);	
